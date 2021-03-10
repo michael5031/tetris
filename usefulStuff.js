@@ -16,6 +16,16 @@ export class Point{
     
 }
 
+
+export class Point3{
+    constructor(newx,newy, newz){
+        this.x = newx;
+        this.y = newy;
+        this.z = newz;
+    }
+    
+}
+
 export class Box{
     constructor(){
         this.full = false;
@@ -61,4 +71,52 @@ export class someVars{
     static gap = 0.2;
     static offsetX = (someVars.size*9) / 2;
     static offsetY = (someVars.size*19) / 2;
+}
+
+
+export class usefulKey{
+    constructor(){
+        this.clock = new THREE.Clock();
+        this.clock.autoStart = false;
+        this.pressed = false;
+        this.delay = 0.3;
+        this.elapsed = 0;
+        this.noDelay = false;
+
+    }
+
+    setPressed(what){
+        if(what == true){
+            this.pressed = true;
+            if(this.clock.running == false){
+                this.clock.start();
+                this.noDelay = true;
+            }
+            return;
+        }
+        this.pressed = false;
+        this.delay = 0.3;
+        this.elapsed = 0;
+        this.clock.stop();
+        this.noDelay = false;
+    }
+
+
+    getPressed(){
+        return this.pressed;
+    }
+
+    canDoStuff(){ //used for the acceleration if a key is held
+        if(this.noDelay == true|| (this.pressed == true && this.clock.getElapsedTime() > this.delay+this.elapsed )){
+            this.noDelay = false;
+            this.elapsed = this.clock.getElapsedTime();
+            this.delay -= 0.12;
+            this.delay = Math.min(Math.max(this.delay, 0.04), 5);
+            return true;
+        }
+        return false;
+    }
+
+
+
 }

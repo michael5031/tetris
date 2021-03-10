@@ -102,9 +102,9 @@ export default class MovingBox{
                     this.boxArray[i][j].rectMesh.position.y = (i + this.position.y) * -someVars.size + someVars.offsetY;
 
 
-                    this.ghostArray[i][j].rectMesh.scale.x = someVars.size;
-                    this.ghostArray[i][j].rectMesh.scale.y = someVars.size;
-                    this.ghostArray[i][j].rectMesh.scale.z = someVars.size;
+                    this.ghostArray[i][j].rectMesh.scale.x = someVars.size-0.01;
+                    this.ghostArray[i][j].rectMesh.scale.y = someVars.size-0.01;
+                    this.ghostArray[i][j].rectMesh.scale.z = someVars.size-0.01;
                     
 
 
