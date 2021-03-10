@@ -1,0 +1,30 @@
+
+
+:root{
+    --font: sans-serif;
+    --col: #ffffffAA;
+}
+
+
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+
+#score{
+    position:static;
+    font-family:  var(--font);
+    font-size: 2em;
+    text-align: center;
+    color: var(--col);
+    z-index: 12;
+    padding: 1.5em;
+}
+
+
+#webgl{
+    z-index: -12;
+    position:fixed;
+}
