@@ -28,6 +28,21 @@ let holdBackMat = undefined;
 
 let keyState = {};    
 let froze = false;
+
+export default function resetRound(){
+    currentSpeed = startSpeed;
+    resetBoard();
+    resetBox();
+    gameClock.stop();
+    gameClock.start();
+    score = 0;
+    updateScore();
+    camera.position.z = 15;
+    camera.position.x = 0;
+    camera.position.y = 0;
+    
+}
+
 function updateScore(){
     document.getElementById("score").innerHTML = "Score: " + score;
 }
@@ -109,9 +124,10 @@ function main(){
         scene.add(sphere);
     }
 
-
+    /*
     loader.load( './models/holdText.glb', function ( gltf ) {
         return;
+         TODO add 3d model
         scene.add( gltf.scene );
         gltf.scene.name = "holdText";
         gltf.scene.scale.x = 2;
@@ -153,7 +169,7 @@ function main(){
         }
     }, 100);
    
-
+    */
     updateScore();
     clock.start(); //starts the clock which is used for the chunks moving down
     zenClock.start();
@@ -369,19 +385,7 @@ function checkForFinishedLines(){
     }
 }
 
-export function resetRound(){
-    currentSpeed = startSpeed;
-    resetBoard();
-    resetBox();
-    gameClock.stop();
-    gameClock.start();
-    score = 0;
-    updateScore();
-    camera.position.z = 15;
-    camera.position.x = 0;
-    camera.position.y = 0;
-    
-}
+
 
 
 

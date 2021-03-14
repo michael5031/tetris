@@ -4,7 +4,7 @@ let playDiv = document.getElementById("playDiv");
 let settingsDiv = document.getElementById("setDiv");
 let controlsDiv = document.getElementById("controlsDiv");
 let deathDiv = document.getElementById("deathDiv");
-import {resetRound} from "./main.js"
+import resetRound from "./main.js";
 export function guiInit(){
     //state 0 == Title Screen
     //state 1 == Play Menu
