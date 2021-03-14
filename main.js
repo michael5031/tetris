@@ -2,20 +2,30 @@ import MovingBox from './movingBox.js';
 import Board from "./board.js";
 import { OrbitControls } from './lib/OrbitControls.js';
 import { Point3, usefulKey } from './usefulStuff.js';
-
+import {guiInit, handleState} from "./gui.js"
+import { GLTFLoader } from './lib/GLTFLoader.js';
+import { BoxGeometry } from './lib/three.module.js';
 let myBoard = new Board();
 let myBox = new MovingBox(Math.floor(Math.random() * 7), myBoard.boardArray);
-
+let myHold = undefined;
 const scene = new THREE.Scene(); 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/ window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(fov, window.innerWidth/ window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({antialias: true});
 const clock = new THREE.Clock();
-
+const loader = new GLTFLoader();
+const zenClock = new THREE.Clock();
+//const light = new THREE.SpotLight(0xffffff);
 const light = new THREE.AmbientLight( 0x404040 );
 
-const controls = new OrbitControls( camera, renderer.domElement );
+controls = new OrbitControls( camera, renderer.domElement );
 
-let score = 0; //the number displayed in the top of the screen
+const startSpeed = 0.3;
+let currentSpeed = startSpeed; //is getting smaller if playing zen
+let holdText = undefined;
+let holdMat = undefined;
+let holdBackMat = undefined;
+
+
 let keyState = {};    
 let froze = false;
 function updateScore(){
@@ -52,19 +62,28 @@ function removeBox(){
     }
 }
 
+
+
+
 function main(){
+
     
+    guiInit();
+    
+
     let div = document.getElementById("webgl").appendChild(renderer.domElement); //sets the webgl renderer to the div
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor("rgb(0,0,0)");
-    
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+
     controls.enablePan = false; //disables dragging with right mouse button
     controls.rotateSpeed = 0.5; //makes the orbit rotating speed half of the original
     controls.update();
-
-    scene.add(light);
-    light.position.z = 4;
     camera.position.z = 15;
+    scene.add(light);
+    light.position.z = 33;
+    
 
     addBox();
     addBoard();
@@ -80,7 +99,7 @@ function main(){
         sphere.position.z = Math.random() * distance - distance / 2;
     }
     let material = new THREE.MeshBasicMaterial( {color: 0xffffff} ); //generates the material, only needs to be done once
-    let geometry = new THREE.SphereGeometry(0.1,segments, segments); //generates the mesh
+    let geometry = new THREE.SphereGeometry(0.2,segments, segments); //generates the mesh
     for(let i = 0; i < amount; i++){
 		let sphere = new THREE.Mesh(geometry, material);
         calculatPosition(sphere);
@@ -91,10 +110,53 @@ function main(){
     }
 
 
-    
+    loader.load( './models/holdText.glb', function ( gltf ) {
+        return;
+        scene.add( gltf.scene );
+        gltf.scene.name = "holdText";
+        gltf.scene.scale.x = 2;
+        gltf.scene.scale.y = 2;
+        gltf.scene.scale.z = 2;
+
+        gltf.scene.rotation.x = 1.56;
+        gltf.scene.rotation.z = -fov/120;
+
+        gltf.scene.position.x = -10.5;
+        gltf.scene.position.y = 1;
+        gltf.scene.position.z = 4.5;
+
+        holdMat = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0xffffff,transparent: true,  opacity: 0 } );
+
+        gltf.scene.traverse((o) => {
+            if (o.isMesh) o.material = holdMat;
+          });
+        let boxGeomety = new THREE.BoxGeometry(5,7,0.3);
+        holdBackMat = new THREE.MeshPhongMaterial({ color: 0x555555, emissive: 0x555555,transparent: true,  opacity: 0 })
+        let cube = new THREE.Mesh(boxGeomety, holdBackMat);
+        scene.add(cube);
+        cube.position.x = -9.5;
+        cube.position.y = -0.4;
+        cube.position.z = 3.3;
+
+        cube.rotation.y = fov/120
+
+    }, undefined, function ( error ) {
+        console.error( error );
+    } );
+
+    let myInterval = setInterval(() => {
+        clearInterval(myInterval);
+        return;
+        holdText = scene.getObjectByName( "holdText" );
+        if(holdText != undefined){
+            clearInterval(myInterval);
+        }
+    }, 100);
+   
 
     updateScore();
     clock.start(); //starts the clock which is used for the chunks moving down
+    zenClock.start();
 }
 
     const keyEsc = 27;
@@ -142,12 +204,44 @@ window.addEventListener('keydown',function(e){
         if(myBoard.isLineFinished()){
             removeBoard();
         }
-        while(myBoard.checkFinishedLines()){
-            score = score + 1000;
-            updateScore();
-        }
+        checkForFinishedLines();
         addBoard();
         resetBox();
+    }
+    else if(e.keyCode == keyShift){
+        //holdMat.opacity = 0.7;
+        //holdBackMat.opacity =0.2;
+        if(myHold != undefined){
+            scene.remove(myHold.group);
+        }
+        myHold = new MovingBox(myBox.type, myBoard.boardArray);
+        myHold.type = myBox.type
+        if(myBox.type == 0){
+            myHold.offsetPosition.x = -8;
+            myHold.offsetPosition.y = -9.5;
+            myHold.offsetPosition.z = 2;
+        }
+        else if(myBox.type ==3){
+            myHold.offsetPosition.x = -8.5;
+            myHold.offsetPosition.y = -10.5;
+            myHold.offsetPosition.z = 2;
+        }
+        else{
+            myHold.offsetPosition.x = -7.5;
+            myHold.offsetPosition.y = -10;
+            myHold.offsetPosition.z = 2;
+        }
+        
+        myHold.offsetRotation.y = fov/120;
+        for(let i = 0 ; i < myHold.size; i++){
+            for(let j = 0; j < myHold.size; j++){
+                
+                myHold.updateRectPos();
+                
+            } 
+        }
+        //TODO add shift
+        //scene.add(myHold.group);
     }
     
 
@@ -163,12 +257,38 @@ function animate(){
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene,camera);
-    if(clock.getElapsedTime() > 0.2){
+    if(clock.getElapsedTime() > currentSpeed){
         clock.stop();
         clock.start();
         moveDown();
+        if(state != 4){ //move blocks randomly when in menu
+            let randNum = Math.floor(Math.random() * 5)
+            let randNumAmount = Math.floor(Math.random() * 4) +1//more numbers are generated than tested so that it sometimes doesnt move
+            for(let i = 0; i < randNumAmount; i++){
+                if(randNum == 0){
+                    if (myBox.isCollidingX(myBoard.boardArray, 1).x == 0) {
+                        myBox.moveX(-1, myBoard.boardArray);
+                    }
+                }
+                else if(randNum == 1){
+                    if (myBox.isCollidingX(myBoard.boardArray, 1).y == 0) {
+                        myBox.moveX(1, myBoard.boardArray);
+                    }
+                }
+            }
+            
+            if(randNum == 2 ){
+                myBox.rotate(0, myBoard.boardArray);
+            }
+            
+        }
+
+        if(gameMode == 1){
+            currentSpeed -= zenSpeedUp/10000;
+        }
     }
     
+
     if(froze){return;}
 
     if(keyState[keyArrDown] != undefined)    
@@ -225,53 +345,43 @@ function moveDown(){
     }
     if(myBoard.placeBlock(myBox)){ //returns true if a chunk goes out of the screen on the vertical axis
         resetBoard(); //simply resets the whole board
+        if(state == 4){
+            handleState(5);
+        }
+        
+       
     }
     if(myBoard.isLineFinished()){ 
         removeBoard();
     }
-    while(myBoard.checkFinishedLines()){
-        score = score + 1000;
-        updateScore();
-    }
+    checkForFinishedLines();
     addBoard();
     resetBox();
 }
 
-/*
-window.addEventListener("keydown", (event) => {
-    if (event.defaultPrevented) {
-      return; 
+function checkForFinishedLines(){
+    while(myBoard.checkFinishedLines()){
+        score = score + 1000;
+        updateScore();
+        if(gameMode == 0 && state == 4 && score >= 40000){
+            handleState(5);
+        }
     }
-  
-    switch (event.key) {
-      case "ArrowDown":
-        moveDown();
-        break;
-      case "ArrowUp":
-        
-        break;
-      case "ArrowLeft":
-        
-        break;
-      case "ArrowRight":
-        
-        break;
-      case "Shift":
-        
-        break;
-      case " ":
-        
-        break;
-      
-      
-    }
-  
+}
 
-    event.preventDefault();
-  }, true);
-*/
-
-
+export function resetRound(){
+    currentSpeed = startSpeed;
+    resetBoard();
+    resetBox();
+    gameClock.stop();
+    gameClock.start();
+    score = 0;
+    updateScore();
+    camera.position.z = 15;
+    camera.position.x = 0;
+    camera.position.y = 0;
+    
+}
 
 
 

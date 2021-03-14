@@ -1,11 +1,43 @@
 
 
 :root{
-    --font: sans-serif;
+    --font: 'Saira', sans-serif;
     --col: #ffffffAA;
+    --text: #ffffff;
+    --colPlay: #D75059BF;
+    --colSettings: #FFA15DBF;
+    --colControls: #836DF4BF;
+
 }
 
+img, span {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 
+button{
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+input{
+    outline: none;
+    border: none;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 body{
     margin: 0px;
     padding: 0px;
@@ -14,17 +46,457 @@ body{
 
 
 #score{
-    position:static;
+    position:relative;
     font-family:  var(--font);
     font-size: 2em;
     text-align: center;
     color: var(--col);
-    z-index: 12;
-    padding: 1.5em;
+    z-index: 1;
+    padding: 1.5em 0 0 0;
 }
 
 
 #webgl{
     z-index: -12;
     position:fixed;
+}
+
+
+
+
+#titleDiv{
+    
+    z-index: 2;
+    width: 80vw;
+    height: 80vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+#titleDiv *{
+    
+    color: var(--text);
+}
+
+
+#titleDiv > button{
+    border-width: 0px;
+    /*padding: 4.9em 0em;*/
+    /*width: 46.8em;*/
+    margin: 1.2rem auto;
+    width: 39rem;
+    border-radius: 10px;
+    font-size: 6em;
+    font-family: var(--font);
+    text-align: center;
+    line-height: 1.45em;
+    text-decoration: none;
+    outline: none;
+    transform: scale(1,1,1);
+    transition: 0.1s transform ease-in-out;
+    cursor: pointer;
+}
+#titleDiv > button:hover{
+    transform: scale(1.1);
+}
+#titleDiv > button:active{
+    transform: scale(1.15);
+}
+#titleDiv > button:nth-child(2){
+    background-color: var(--colPlay);
+}
+#titleDiv > button:nth-child(3){
+    background-color: var(--colSettings);
+}
+#titleDiv > button:nth-child(4){
+    background-color: var(--colControls);
+}
+
+#titleDiv > span{
+    font-family: var(--font);
+    font-weight: 800;
+    font-size: 17em;
+    line-height: 1em;
+    text-align: center;
+    margin-bottom: 0.02em;
+}
+
+
+.div{
+    background-color: blue;
+    z-index: 3;
+    width: 72vw;
+    height: 79vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+#playDiv{
+    display: none;
+    background-color: rgba(215, 80, 89, 0.75);
+}
+#playDiv > div, #setDiv > div:nth-of-type(1),  #controlsDiv > div:nth-of-type(1){
+    
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    grid-template-rows: 1fr;
+    margin-bottom: 2.3rem;
+
+}
+/*text and button*/
+#playDiv > div * , #setDiv > div:nth-of-type(1) *, #controlsDiv > div:nth-of-type(1) *{
+    
+    text-align: center;
+    
+}
+#playDiv > div > span, #setDiv > div:nth-of-type(1) > span, #controlsDiv > div:nth-of-type(1) > span{
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-right: 17rem;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 5.55rem;
+    line-height: 1;
+    
+}
+/*only title*/
+#deathDiv > p:nth-of-type(1){
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 5.55rem;
+    line-height: 1;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#playDiv > div > button , #setDiv > div:nth-of-type(1) > button, #controlsDiv > div:nth-of-type(1) > button{
+    background-color: transparent;
+    margin: 2em;
+    margin-top: 3em;
+    border:none;
+    transition: 0.1s transform ease-in-out;
+    outline: none;
+}
+#playDiv > div > button:hover , #setDiv > div:nth-of-type(1) > button:hover, #controlsDiv > div:nth-of-type(1) > button:hover {
+    transform: scale(1.1);
+}
+#playDiv > div > button:active, #setDiv > div:nth-of-type(1) > button:active, #controlsDiv > div:nth-of-type(1) > button:active{
+    transform: scale(1.15);
+}
+
+#playDiv > div > button > img, #setDiv > div:nth-of-type(1) > button > img, #controlsDiv > div:nth-of-type(1) > button > img{
+    width: 6em;
+    filter: invert(100%) sepia(2%) saturate(7500%) hue-rotate(4deg) brightness(122%) contrast(103%);
+}
+
+#playDiv > button{
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 10px;
+    margin: 0.4em auto;
+    font-size: 4.5rem;
+    font-family: var(--font);
+    line-height: 0;
+    height: 11.4rem;
+    width: 39.5rem;
+    transition: 0.1s transform ease-in-out;
+    color: var(--text);
+
+}
+
+#playDiv > button:hover{
+    transform: scale(1.1);
+}
+#playDiv > button:active{
+    transform: scale(1.15);
+
+}
+
+
+
+#setDiv{
+    display: none;
+    background: rgba(255, 161, 93, 0.75);
+    margin: 0 auto;
+    padding: 0px;
+}
+
+
+#setInner{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    min-height: 53vh;
+    
+}
+#setInner > div{
+    border-radius: 10px;
+    background-color:  rgba(0, 0, 0, 0.08);
+    margin: 0 1.2em;
+    /*padding: 23.5vh 0;
+*/}
+
+#setInner * > input{
+    font-family: var(--font);
+    color: var(--text);
+    text-align: center;
+    font-size: 1.5em;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+
+}
+
+#setInner * > span{
+    font-family: var(--font);
+    color: var(--text);
+    font-size: 1.8vw;
+    margin: auto 0;
+}
+
+#setInner > div:nth-of-type(1){
+    margin-left: 2.5em;
+    margin-right: 0.5em;
+
+}
+
+#setInner > div:nth-of-type(3){
+    margin-right: 2.5em;
+    margin-left: 0.5em;
+
+}
+
+#setInner > div > p{
+    font-family: var(--font);
+    text-align: center;
+    font-size: calc(1.8vw + 30px);
+    color: var(--text);
+    line-height: 0;
+    margin-top: 3rem;
+    margin-bottom: 12vh;
+}
+
+#setInner > div:nth-of-type(1) > div, #setInner > div:nth-of-type(2) > div, #setInner > div:nth-of-type(3) > div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#setInner > div:nth-of-type(1) > div > input, #setInner > div:nth-of-type(2) > div > input, #setInner > div:nth-of-type(3) > div > input, #graplabel{
+    width: 7vw;
+    height: 3.5vh;
+    margin: auto 0;
+    margin-right: 1.9vw;  
+}
+#setInner > div:nth-of-type(1) > div > span, #setInner > div:nth-of-type(2) > div > span, #setInner > div:nth-of-type(3) > div > span{
+    margin-left: 1.6vw;
+}
+#setInner > div:nth-of-type(2) > div > span{
+    font-size: 1.5vw;
+}
+#setInner > div:nth-of-type(3) > div:nth-of-type(2) > span:nth-of-type(1){
+    font-size: 1.5vw;
+}
+#graplabel{
+    width: 3em;
+    height: 1.3em;
+}
+#grapcheckbox{
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+
+
+}
+#grapcheckmark{
+    color: transparent;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    position: absolute;
+    height: 33px;
+    width: 33px;
+    margin: auto 0;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 2em;
+    line-height: 0.85em;
+    padding-left: 0.5em;
+
+}
+
+#graplabel input:checked ~ #grapcheckmark {
+    color: white;
+}
+
+
+#controlsDiv{
+    display: none;
+    background-color: rgba(131, 109, 244, 0.75);
+}
+
+#controlsDiv > div:nth-of-type(2){
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr ;
+    grid-template-columns: 1fr 1fr;
+}
+
+#controlsDiv > div:nth-of-type(2) > div{
+    width: 29vw;
+    margin-left: 4.5vw;
+    height: 10vh;
+    margin-top: 1vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#controlsDiv > div:nth-of-type(2) > div > span{
+    font-family: var(--font);
+    color: var(--text);
+    font-size: 2.5vw;
+    line-height: 0;
+    margin: auto 0;
+    
+}
+
+#controlsDiv > div:nth-of-type(2) > div > button{
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--text);
+    margin: auto 0;
+    font-size: 1.5vw;
+    width: 13vw;
+    height: 5vh;
+    border-radius: 7px;
+    transition: ease-in-out 0.1s transform;
+}
+
+#controlsDiv > div:nth-of-type(2) > div > button:hover{
+    transform: scale(1.1);
+}
+
+#controlsDiv > div:nth-of-type(2) > div > button:active{
+    transform: scale(1.15);
+}
+
+#deathDiv{
+    display: none;
+    background-color: var(--colPlay);
+}
+
+
+#deathDiv > div:nth-of-type(1){
+    display: flex;
+    flex-direction: row;
+    margin: 2vh auto;
+}
+#deathDiv > div:nth-of-type(1) > div{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0 3.8vw;
+}
+
+#deathDiv > div:nth-of-type(1) > div > span{
+    font-family: var(--font);
+    color: var(--text);
+    font-size: 2.5vw;
+    line-height: 1;
+}
+#deathDiv > div:nth-of-type(1) > div > span:nth-of-type(2){
+    font-size: 2vw;
+    color: #ffffffAA;
+}
+
+#deathDiv > div:nth-of-type(2){
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 8vh;
+}
+#deathDiv > div:nth-of-type(2) > button{
+ width: 24.6vw;
+ height: 14vh;
+ margin: 0.9vh 1vw;
+ border-radius: 5px;
+ background-color: rgba(0, 0, 0, 0.3);
+ font-size: 2.5vw;
+ color: var(--text);
+ transform: scale(1);
+ transition: 0.1s ease-in-out transform;
+}
+
+#deathDiv > div:nth-of-type(2)  > button:hover{
+    transform: scale(1.1);
+}
+
+#deathDiv > div:nth-of-type(2)  > button:active{
+    transform: scale(1.15);
+}
+
+/* TODO: add sidepanel lol
+#sidePanel{
+    position: absolute;
+    color: white;
+    
+    background-color: gray;
+    z-index: -1;
+    width: 5em;
+}
+
+#sidePanel > p{
+    width: 5em;
+    text-align: center;
+}
+*/
+
+#test{
+ display: none;
+}
+
+#test2{
+display: none;
+}
+
+#test3{
+display: none;
+}
+
+#test4{
+display: none;
+}
+
+
+/*animations*/
+
+.appear {
+    
+    animation: appearAnimation 0.5s ease-out;
+    -webkit-animation: appearAnimation 0.5s ease-out;
+}
+@keyframes appearAnimation {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+
+.disappear {
+    
+    animation: disappearAnimation 0.5s ease-in;
+    -webkit-animation: disappearAnimation 0.5s ease-in;
+}
+@keyframes disappearAnimation {
+    0% { transform: scale(1); }
+    100% { transform: scale(0); }
+}
+
+.rotate{
+    animation: rotateAnimation 60s linear infinite;
+    -webkit-animation: rotateAnimation 60s linear  infinite;
+}
+
+@keyframes rotateAnimation{
+    0%{transform: rotate(0deg);}
+    25%{transform: rotate(5deg);}
+    50%{transform: rotate(0deg);}
+    75%{transform: rotate(-5deg);}
 }

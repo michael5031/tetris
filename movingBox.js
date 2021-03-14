@@ -1,4 +1,5 @@
-import { Box, Color, Point, someVars } from "./usefulStuff.js";
+import { Vector3 } from "./lib/three.module.js";
+import { Box, Color, Point, Point3, someVars } from "./usefulStuff.js";
 
 const types = ["0000111100000000", "100111000", "001111000", "1111", "011110000", "010111000", "110011000"];
 
@@ -26,6 +27,15 @@ export default class MovingBox{
         //sets position
         this.position = new Point(Math.floor(10/2-this.size/2),0);
 
+        //offsetPosition
+        this.offsetPosition = new Point3(0,0,0);
+
+        //offsetRotation
+        this.offsetRotation = new Point3(0,0,0);
+
+
+        //group
+        this.group = new THREE.Group();
 
         //sets lowest position gets updated every moveX
         this.ghostPosition = new Point(0,0);
@@ -41,6 +51,7 @@ export default class MovingBox{
                 }
                 this.boxArray[i][j].setFull(isFull);
                 this.ghostArray[i][j].setFull(isFull);
+                this.group.add(this.boxArray[i][j].rectMesh);
                 if(isFull){
                     switch(this.type){ //checks type and changes color
                         case 0:
@@ -92,14 +103,25 @@ export default class MovingBox{
     }
 
     updateRectPos = () =>{
+        this.group.rotation.x = this.offsetRotation.x;
+        this.group.rotation.y = this.offsetRotation.y;
+        this.group.rotation.z = this.offsetRotation.z;
+        this.group.position.x = this.offsetPosition.x;
+        this.group.position.y = this.offsetPosition.y;
+        this.group.position.z = this.offsetPosition.z;
+
+                    
         for(let i = 0; i < this.size; i++){
             for(let j = 0 ; j < this.size; j++){
                 if(this.boxArray[i][j].full){
                     this.boxArray[i][j].rectMesh.scale.x = someVars.size;
                     this.boxArray[i][j].rectMesh.scale.y = someVars.size;
                     this.boxArray[i][j].rectMesh.scale.z = someVars.size;
-                    this.boxArray[i][j].rectMesh.position.x = (j + this.position.x) * someVars.size - someVars.offsetX;
-                    this.boxArray[i][j].rectMesh.position.y = (i + this.position.y) * -someVars.size + someVars.offsetY;
+                    this.boxArray[i][j].rectMesh.position.x = (j + this.position.x ) * someVars.size - someVars.offsetX ;
+                    this.boxArray[i][j].rectMesh.position.y = (i + this.position.y) * -someVars.size + someVars.offsetY ;
+                    this.boxArray[i][j].rectMesh.position.z = this.offsetPosition.z;
+
+                    
 
 
                     this.ghostArray[i][j].rectMesh.scale.x = someVars.size-0.01;

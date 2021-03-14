@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;800&display=swap" rel="stylesheet">
     <title>Tetris</title>
 </head>
 <body>
@@ -12,9 +14,144 @@
 
     <div id="score">
     </div>
+    <!--
+    <div id="sidePanel">
+        <div>
+            <p>Hold</p>
+            <div id="divGrid">
+
+            </div>
+        </div>
+    </div>
+   -->
+    <div id="titleDiv">
+        <span>3D Tetris</span>
+        <button>Play</button>
+        <button>Settings</button>
+        <button>Controls</button>
+    </div>
+
+    <span id="test">You Lost</span>
+    <span id="test2">Score: 320</span>
+    <span id="test3">Play again</span>
+    <span id="test4">Return to Menu</span>
+
+    <div id="deathDiv" class="div">
+        <p>You Lost</p>
+        <div>
+            <div>
+                <span>Score: 320</span>
+                <span> </span>
+            </div>
+            <div>
+                <span>Time: 03:23</span>
+                <span> </span>
+            </div>
+        </div>
+        <div>
+            <button>Play again</button>
+            <button>Return to Menu</button>
+        </div>
+        
+    </div>
+
+   
+    <div id="playDiv" class="div">
+        <div>
+            <button><img src="backicon.svg"></button>
+            <span>Play</span>
+        </div>
+        <button>40 Lines</button>
+        <button>Zen</button>
+    </div>
+
+    <div id="setDiv" class="div">
+        <div>
+            <button><img src="backicon.svg"></button>
+            <span>Settings</span>
+        </div>
+        <div id="setInner">
+            <div>
+                <p>General</p>
+                <div>
+                    <span>FOV</span>
+                    <input type="number">
+                </div>
+                <div>
+                    <span>Stars</span>
+                    <input type="number">
+                </div>
+            </div>
+            <div>
+                <p>Game</p>
+                <div>
+                    <span>Zen-Speedup</span>
+                    <input type="number">
+                </div>
     
+            </div>
+            <div>
+                <p>Graphics</p>
+                <div>
+                    <span>3D Mode</span>
+                    <label id="graplabel">
+                        <input id="grapcheckbox" type="checkbox">
+                        <a id="grapcheckmark">x</a>
+                    </label>
+                    
+                </div>
+                <div>
+                    <span>Color Theme</span>
+                    <input type="number">
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <div id="controlsDiv" class="div">
+        <div>
+            <button><img src="backicon.svg"></button>
+            <span>Controls</span>
+        </div>
+        <div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+            <div>
+                <span>Rotate</span>
+                <button>Yes</button>
+            </div>
+        </div>
+    </div>
+
     
     <script src="lib/three.js"></script>
+    <script type='text/javascript' src="./globalVars.js"></script>
     <script type="module" src=./main.js></script>
+    <script type="module"  src="./gui.js"></script>
+   
 </body>
 </html>
