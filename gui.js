@@ -41,12 +41,21 @@ export function guiInit(){
 
     //Settings
     document.querySelector("#titleDiv > button:nth-of-type(2)").addEventListener("click",() =>{
+        document.querySelector("#setInner > div:nth-of-type(1) > div:nth-of-type(1) > input").value = fov;
+
         handleState(2);    
     })
     //Settings Back Button
     document.querySelector("#setDiv > div:nth-of-type(1) > button").addEventListener("click",() =>{
+        fov = setNumber(document.querySelector("#setInner > div:nth-of-type(1) > div:nth-of-type(1) > input").value, defaultFov, 10, 180);
+        camera.fov = fov;
+        camera.updateProjectionMatrix();
+        
+        localStorage.setItem('fov', fov);
+       
         handleState(0);    
     })
+
 
 
     //Controls
@@ -119,6 +128,7 @@ export function handleState(state1){
         deathChange(false);
     }
     if(state === 4){
+        score = 0;  
         if(gameClock == undefined){
             gameClock = new THREE.Clock();
             
@@ -224,6 +234,16 @@ function deathChange(which){
         return;
     }
     deathDiv.style.display = "none";
+}
+
+function setNumber(input, defaultNum, limitMin, limitMax){
+    if(parseInt(input) == undefined || input == ""){
+        return defaultNum;
+        
+    }
+    else{
+        return Math.min(Math.max(parseInt(input), limitMin), limitMax);
+    }
 }
 
 

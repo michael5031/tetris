@@ -9,13 +9,17 @@ let myBoard = new Board();
 let myBox = new MovingBox(Math.floor(Math.random() * 7), myBoard.boardArray);
 let myHold = undefined;
 const scene = new THREE.Scene(); 
-const camera = new THREE.PerspectiveCamera(fov, window.innerWidth/ window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({antialias: true});
 const clock = new THREE.Clock();
 const loader = new GLTFLoader();
 const zenClock = new THREE.Clock();
 //const light = new THREE.SpotLight(0xffffff);
-const light = new THREE.AmbientLight( 0x404040 );
+//const light = new THREE.AmbientLight( 0x404040 );
+const light= new THREE.DirectionalLight( 0xffffff );
+//light.rotation.z = 50;
+light.position.x = 0.7;
+light.position.z = 1;
+//dirLight.position.set( -10, 10, 10 );
 
 controls = new OrbitControls( camera, renderer.domElement );
 
@@ -35,7 +39,6 @@ export default function resetRound(){
     resetBox();
     gameClock.stop();
     gameClock.start();
-    score = 0;
     updateScore();
     camera.position.z = 15;
     camera.position.x = 0;
@@ -95,16 +98,16 @@ function main(){
     controls.enablePan = false; //disables dragging with right mouse button
     controls.rotateSpeed = 0.5; //makes the orbit rotating speed half of the original
     controls.update();
-    camera.position.z = 15;
+    camera.position.z = 20;
     scene.add(light);
-    light.position.z = 33;
+    
     
 
     addBox();
     addBoard();
 
     //stars
-    const amount = 2000;
+    const amount = 1000;
     const distance = 500;
     const segments = 2;
     const safeDistance = new Point3(10,10,25); //the size of a cube in which stars won't spawn
@@ -209,6 +212,8 @@ window.addEventListener('keydown',function(e){
     }
     else if(e.keyCode == keyR ){ 
         resetBoard();
+        score = 0;
+        updateScore();
     }
     else if(e.keyCode == keySpace){ 
         while(myBox.isCollidingY(myBoard.boardArray, 1).y == false){
@@ -299,10 +304,18 @@ function animate(){
             
         }
 
+        
+    }
+
+    if(zenClock.getElapsedTime() > 2){
+        zenClock.stop();
+        zenClock.start();
         if(gameMode == 1){
-            currentSpeed -= zenSpeedUp/10000;
+            currentSpeed -= zenSpeedUp/70000;
         }
     }
+    
+
     
 
     if(froze){return;}
@@ -331,7 +344,6 @@ function animate(){
 
 
 function resetBoard(){    
-    score = 0;
     updateScore();
     removeBoard(); //removes the threejs objects from the scene
     myBoard = undefined; 

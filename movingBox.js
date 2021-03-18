@@ -76,7 +76,7 @@ export default class MovingBox{
                             this.boxArray[i][j].color = new Color(223, 75, 83);
                         break;
                     }
-                    this.ghostArray[i][j].color = new  Color(55,55,55);
+                    this.ghostArray[i][j].color = new  Color(95,95,95);
                     this.ghostArray[i][j].update();
                     this.boxArray[i][j].update(); //applies color to the texture
                 }
@@ -117,9 +117,17 @@ export default class MovingBox{
                     this.boxArray[i][j].rectMesh.scale.x = someVars.size;
                     this.boxArray[i][j].rectMesh.scale.y = someVars.size;
                     this.boxArray[i][j].rectMesh.scale.z = someVars.size;
-                    this.boxArray[i][j].rectMesh.position.x = (j + this.position.x ) * someVars.size - someVars.offsetX ;
-                    this.boxArray[i][j].rectMesh.position.y = (i + this.position.y) * -someVars.size + someVars.offsetY ;
-                    this.boxArray[i][j].rectMesh.position.z = this.offsetPosition.z;
+                    if(isCurved == false){
+                        this.boxArray[i][j].rectMesh.position.x = (j + this.position.x ) * someVars.size - someVars.offsetX;
+                        this.boxArray[i][j].rectMesh.position.y = (i + this.position.y) * -someVars.size + someVars.offsetY;
+                        this.boxArray[i][j].rectMesh.position.z = this.offsetPosition.z;
+                    }
+                    else{
+                        this.boxArray[i][j].rectMesh.position.x = Math.cos(((j + this.position.x ) * someVars.size - someVars.offsetX )/curveAmountX + 4.7 ) * scaleAmountX;
+                        this.boxArray[i][j].rectMesh.position.z = Math.sin(((j + this.position.x ) * someVars.size - someVars.offsetX )/curveAmountY + 4.7) *scaleAmountY+5 + this.offsetPosition.z;
+                        this.boxArray[i][j].rectMesh.position.y = (i + this.position.y) * -someVars.size + someVars.offsetY;
+                    }
+                    
 
                     
 
@@ -130,8 +138,16 @@ export default class MovingBox{
                     
 
 
-                    this.ghostArray[i][j].rectMesh.position.x = (j + this.ghostPosition.x) * someVars.size - someVars.offsetX;
-                    this.ghostArray[i][j].rectMesh.position.y = (i + this.ghostPosition.y) * -someVars.size + someVars.offsetY;
+                    if(isCurved == false){
+                        this.ghostArray[i][j].rectMesh.position.x = (j + this.ghostPosition.x) * someVars.size - someVars.offsetX;
+                        this.ghostArray[i][j].rectMesh.position.y = (i + this.ghostPosition.y) * -someVars.size + someVars.offsetY;
+                    }
+                    else{
+                        this.ghostArray[i][j].rectMesh.position.x = Math.cos(((j + this.ghostPosition.x) * someVars.size - someVars.offsetX )/curveAmountX + 4.7 ) * scaleAmountX;
+                        this.ghostArray[i][j].rectMesh.position.z = Math.sin(((j + this.ghostPosition.x) * someVars.size - someVars.offsetX)/curveAmountY + 4.7) * scaleAmountY +5;
+                        this.ghostArray[i][j].rectMesh.position.y = (i + this.ghostPosition.y) * -someVars.size + someVars.offsetY;
+                    }
+                    
                 }
                 else{
                     this.boxArray[i][j].rectMesh.scale.x = 0;

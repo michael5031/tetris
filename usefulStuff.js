@@ -25,16 +25,18 @@ export class Point3{
     }
     
 }
-
-export class Box{
-    constructor(){
+let rectGeometry = createBoxWithRoundedEdges( 1, 1, 1, 0.2, 15);
+let rectGeometryNotRounded = new THREE.BoxGeometry( 1, 1, 1 );
+export class Box {
+    
+    constructor() {
         this.full = false;
         this.color = new Color(255,0,0);
         this.threeJSColor = new THREE.Color();
 
-        this.rectGeometry = new THREE.BoxGeometry();
+        
         this.rectMaterial = new THREE.MeshPhongMaterial({color: 0xAAAAAA});
-        this.rectMesh = new THREE.Mesh(this.rectGeometry, this.rectMaterial);
+        this.rectMesh = new THREE.Mesh(rectGeometry, this.rectMaterial);
 
         this.update();
     }
@@ -47,13 +49,20 @@ export class Box{
             this.rectMaterial.transparent = false;
             this.rectMaterial.opacity = 1;
             this.rectMaterial.emissive = this.threeJSColor;
+            this.rectMaterial.emissiveIntensity = 0.5;
+            if(this.rectMesh.geometry != rectGeometry){
+                this.rectMesh.geometry = rectGeometry;
+            }
+            
 
         }
         else{
-            this.rectMaterial.color = new THREE.Color(0.3, 0.3, 0.3);
+            this.rectMaterial.color = new THREE.Color(0.7, 0.7, 0.7);
             this.rectMaterial.transparent = true;
             this.rectMaterial.opacity = 0.6;
-
+            if(this.rectMesh.geometry != rectGeometryNotRounded){
+                this.geometry = rectGeometryNotRounded;
+            }
             //this.rectMaterial.emissive = new THREE.color(0,0,0);
         }
     }
@@ -68,7 +77,7 @@ export class Box{
 
 export class someVars{
     static size = 1;
-    static gap = 0.2;
+    static gap = 0.09;
     static offsetX = (someVars.size*9) / 2;
     static offsetY = (someVars.size*19) / 2;
 }
@@ -120,3 +129,26 @@ export class usefulKey{
 
 
 }
+
+function createBoxWithRoundedEdges( width, height, depth, radius0, smoothness ) {
+    let shape = new THREE.Shape();
+    let eps = 0.00001;
+    let radius = radius0 - eps;
+    shape.absarc( eps, eps, eps, -Math.PI / 2, -Math.PI, true );
+    shape.absarc( eps, height -  radius * 2, eps, Math.PI, Math.PI / 2, true );
+    shape.absarc( width - radius * 2, height -  radius * 2, eps, Math.PI / 2, 0, true );
+    shape.absarc( width - radius * 2, eps, eps, 0, -Math.PI / 2, true );
+    let geometry = new THREE.ExtrudeBufferGeometry( shape, {
+      amount: depth - radius0 * 2,
+      bevelEnabled: true,
+      bevelSegments: smoothness * 2,
+      steps: 1,
+      bevelSize: radius,
+      bevelThickness: radius0,
+      curveSegments: smoothness
+    });
+    
+    geometry.center();
+    
+    return geometry;
+  }

@@ -1,6 +1,6 @@
 import { Box, Color, Point, someVars } from "./usefulStuff.js";
 
-export default class Board{
+export default class Board {
     constructor(){
         //creates array and changes size
         this.boardArray = new Array(20);
@@ -20,7 +20,14 @@ export default class Board{
     updatePos(){
         for(let i = 0; i < this.boardArray.length; i++){
             for(let j = 0; j < this.boardArray[0].length; j++){
-                this.boardArray[i][j].rectMesh.position.x = j * someVars.size - someVars.offsetX;
+                if(isCurved == false){
+                    this.boardArray[i][j].rectMesh.position.x = j * someVars.size - someVars.offsetX;
+                }
+                else{
+                    this.boardArray[i][j].rectMesh.position.x = Math.cos((j * someVars.size - someVars.offsetX)/curveAmountX + 4.7 ) * scaleAmountX;
+                    this.boardArray[i][j].rectMesh.position.z = Math.sin((j* someVars.size - someVars.offsetX)/curveAmountY + 4.7) * scaleAmountY + 5;
+                }
+                
                 this.boardArray[i][j].rectMesh.position.y = i * -someVars.size + someVars.offsetY;
                 
                 if(this.boardArray[i][j].full){
